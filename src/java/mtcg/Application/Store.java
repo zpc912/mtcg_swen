@@ -1,4 +1,4 @@
-package mtcg.Classes;
+package mtcg.Application;
 
 public class Store {
     private Trade[] trades;

@@ -1,4 +1,4 @@
-package mtcg.Classes;
+package mtcg.Application;
 import mtcg.Enum.elementType;
 import java.util.Arrays;
 import java.util.Collections;

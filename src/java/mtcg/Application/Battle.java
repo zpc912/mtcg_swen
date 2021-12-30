@@ -1,4 +1,4 @@
-package mtcg.Classes;
+package mtcg.Application;
 
 public class Battle {
     private User[] players;

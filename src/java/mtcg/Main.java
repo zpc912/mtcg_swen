@@ -1,6 +1,5 @@
-package mtcg.Main;
-import mtcg.Classes.*;
-import mtcg.Classes.Package;
+package mtcg;
+import mtcg.Application.*;
 
 import java.io.IOException;
 import java.util.Objects;

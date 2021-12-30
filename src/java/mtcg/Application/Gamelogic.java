@@ -1,5 +1,4 @@
-package mtcg.Classes;
-import mtcg.Enum.elementType;
+package mtcg.Application;
 
 import java.io.IOException;
 import java.util.Scanner;

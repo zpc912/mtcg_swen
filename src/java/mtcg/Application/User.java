@@ -1,5 +1,4 @@
-package mtcg.Classes;
-import java.io.IOException;
+package mtcg.Application;
 import java.util.ArrayList;
 
 public class User {

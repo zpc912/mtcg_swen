@@ -1,4 +1,4 @@
-package mtcg.Classes;
+package mtcg.Application;
 import mtcg.Enum.elementType;
 
 public abstract class Card {
