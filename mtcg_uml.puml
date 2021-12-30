@@ -1,0 +1,159 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class User
+abstract class Card
+enum elementType
+class MonsterCard
+class SpellCard
+class CardGenerator
+class Trade
+class Package
+class Deck
+class Store
+class Battle
+class Gamelogic
+class Serverlogic
+
+
+class User {
+    - username: String
+    - password: String
+    - ELO: int
+    - coins: int
+    - stack: Card[]
+    - deck: Deck[]
+
+    + createDeck()
+    + viewDeck()
+    + editDeck()
+    + deleteDeck()
+}
+
+
+abstract class Card {
+    - name: String
+    - damage: int
+    - element: enum
+
+    + getName()
+    + getDamage()
+    + getElement()
+    + getCardInfo()
+}
+
+
+enum elementType {
+    FIRE,
+    WATER,
+    NORMAL
+}
+
+
+class MonsterCard {
+    - name: String
+    - damage: int
+    - element: enum
+
+    + getName()
+    + getDamage()
+    + getElement()
+    + getCardInfo()
+}
+
+
+class SpellCard {
+    - name: String
+    - damage: int
+    - element: enum
+
+    + getName()
+    + getDamage()
+    + getElement()
+    + getCardInfo()
+}
+
+
+class CardGenerator {
+    - cards: Card[]
+
+    + generateCard()
+}
+
+
+class Trade {
+    - cardToTrade: Card
+    - tradePartner: User
+
+    + getTradeInfo()
+}
+
+
+class Package {
+    - packageCards: Card[]
+    - price: int
+
+    + createPackage()
+}
+
+
+class Deck {
+    - deckCards: Card[]
+
+    + checkDeck()
+    + addCardToDeck()
+    + removeCardFromDeck()
+}
+
+
+class Store {
+    - trades: Trade[]
+
+    + requestTrade()
+    + acceptTrade()
+    + buyPack()
+}
+
+
+class Battle {
+    - players: User[]
+    - round: int
+    - battleLog: String[]
+
+    + fight()
+    + checkEffectiveness()
+    + updateScore()
+}
+
+
+class Gamelogic {
+    - input: String
+    - userProfile: User
+
+    + login()
+    + register()
+    + gameMenu()
+    + editProfile()
+    + viewScore()
+    + buyPack()
+}
+
+
+class Serverlogic {
+    + ...
+
+    + ...()
+}
+
+
+Card <|-- MonsterCard
+Card <|-- SpellCard
+Gamelogic -- User
+Gamelogic -- Store
+User -- Deck
+Store -- Trade
+Store -- Package
+Package -- CardGenerator
+
+
+@enduml
