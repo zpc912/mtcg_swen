@@ -54,7 +54,7 @@ public class Gamelogic {
             viewScore();
         }
         else if(userInput == 'm') {
-            // TODO: forward user to store
+            // TODO: go to store
         }
     }
 
@@ -69,6 +69,7 @@ public class Gamelogic {
         System.out.println("   - Coins: " + user.getCoins());
 
         System.out.println("\nOther options:");
+        System.out.println("Press 's' to view your stack");
         System.out.println("Press 'd' to view your current deck");
         System.out.println("Press 'e' to edit your current deck");
         System.out.println("Press 'b' to go back");
@@ -77,7 +78,7 @@ public class Gamelogic {
             System.out.print(": ");
             userInput = sc.nextLine().charAt(0);
 
-            if(userInput != 'd' && userInput != 's' && userInput != 'b') {
+            if(userInput != 's' && userInput != 'd' && userInput != 'e' && userInput != 'b') {
                 System.out.println("I couldn't understand you. Can you repeat that?");
             }
             else {
@@ -85,17 +86,20 @@ public class Gamelogic {
             }
         }
 
-        if(userInput == 'd') {
+        if(userInput == 's') {
+            user.viewStack();
+        }
+        else if(userInput == 'd') {
             user.viewDeck();
         }
         else if(userInput == 'e') {
-            System.out.println("Do you want to add (a) or remove (r) a card from your deck?");
+            System.out.println("Do you want to clean (c), add (a) or remove (r) cards from your deck?");
 
             while(true) {
                 System.out.println(": ");
                 userInput = sc.nextLine().charAt(0);
 
-                if(userInput != 'a' && userInput != 'r') {
+                if(userInput != 'c' && userInput != 'a' && userInput != 'r') {
                     System.out.println("I can't figure out what you mean.");
                 }
                 else {
@@ -113,5 +117,10 @@ public class Gamelogic {
 
     public void viewScore() {
         // TODO: load scores from database and display as scoreboard
+    }
+
+
+    public void store() {
+        // TODO: store etc.
     }
 }

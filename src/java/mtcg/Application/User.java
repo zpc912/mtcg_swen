@@ -63,24 +63,36 @@ public class User {
     public void viewDeck() {
         if(deck.checkDeck()) {
             System.out.println("deck is empty");
+            // TODO: logic
         }
         else {
             System.out.println("deck is not empty");
+            // TODO: logic
         }
     }
 
 
     public void editDeck(char deckOption) {
-        if(deckOption == 'a') {
-            // TODO: select card to add to deck
-        }
-        else {
-            // TODO: select card to remove from deck
+        switch(deckOption) {
+            case 'c':
+                deck.cleanDeck();
+            case 'a':
+                // TODO: select card to add to deck
+                break;
+
+            case 'r':
+                // TODO: select card to remove from deck
+                break;
         }
     }
 
 
     public void deleteDeck() {
         deck.cleanDeck();
+    }
+
+
+    public void viewStack() {
+        // TODO: print stack
     }
 }

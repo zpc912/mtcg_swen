@@ -13,6 +13,7 @@ public class Main {
         String username, password;
 
 
+
         /*CardGenerator cg = new CardGenerator();
         Card[] shc;
         shc = cg.shuffleCards();
@@ -27,10 +28,11 @@ public class Main {
         User user = new User("username123", "pw123", 100, 20);
         //user.viewDeck();
         //user.deleteDeck();
-        user.editDeck('a');
+        user.editDeck('c');
 
 
-        System.out.println();
+
+        System.out.println(); // TODO: REMOVE AFTER IMPLEMENTING UNIT TESTS
 
         System.out.println("Hello traveler! Do we know each other?");
         System.out.println("- Yes (y)");

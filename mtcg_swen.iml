@@ -17,5 +17,19 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../jackson-databind-2.13.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../jackson-core-2.13.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../jackson-annotations-2.13.1.jar!/" />
+          <root url="file://$MODULE_DIR$" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/src/java" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
