@@ -1,33 +1,59 @@
 package mtcg.Application;
-
+import mtcg.Database.Postgres;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Gamelogic {
      private User user;
 
 
-    public void loginUser(String username, String password) throws IOException {
-        System.out.println(username);
-        System.out.println(password);
+    public void userLogin(String username, String password) throws IOException, SQLException {
+        Postgres db = new Postgres();
+        boolean res = db.loginUser(username, password);
 
-        // TODO: login user with credentials from database
+        if(res) {
+            user = db.fetchUserData(username);
+            gameMenu();
+        }
+        else {
+            startScreen();
+        }
     }
 
 
-    public void registerUser(String username, String password) throws IOException {
-        user = new User(username, password, 100, 20);
-        // TODO: add user to database
-        gameMenu();
+    public void userRegistration(String username, String password) throws IOException, SQLException {
+        Postgres db = new Postgres();
+        boolean res = db.registerUser(username, password);
+
+        if(res) {
+            user = new User(username, password, 100, 20);
+            gameMenu();
+        }
+        else {
+            startScreen();
+        }
     }
 
 
-    public void gameMenu() {
+    public User returnUser() {
+        if(user != null) {
+            return user;
+        }
+        else {
+            return null;
+        }
+    }
+
+
+    public void gameMenu() throws SQLException {
         System.out.println("\nWhat would you like to do, " + user.getUsername() + "?");
         System.out.println("- Start a match (f)");
         System.out.println("- View & edit profile (p)");
         System.out.println("- View stats (s)");
         System.out.println("- Marketplace (m)");
+        System.out.println("- Logout and Exit (q)");
 
         Scanner sc = new Scanner(System.in);
         char userInput;
@@ -36,7 +62,7 @@ public class Gamelogic {
             System.out.print(": ");
             userInput = sc.nextLine().charAt(0);
 
-            if(userInput != 'f' && userInput != 'p' && userInput != 's' && userInput != 'm') {
+            if(userInput != 'f' && userInput != 'p' && userInput != 's' && userInput != 'm' && userInput != 'q') {
                 System.out.println("Please select one of the options above.");
             }
             else {
@@ -56,10 +82,13 @@ public class Gamelogic {
         else if(userInput == 'm') {
             // TODO: go to store
         }
+        else if(userInput == 'q') {
+            closeGame(user.getUsername());
+        }
     }
 
 
-    public void editProfile() {
+    public void editProfile() throws SQLException {
         char userInput;
         Scanner sc = new Scanner(System.in);
 
@@ -115,6 +144,80 @@ public class Gamelogic {
     }
 
 
+    public void startScreen() throws SQLException, IOException {
+        Scanner sc = new Scanner(System.in);
+        char userInput;
+        String username, password;
+
+        System.out.println("\nHello traveler! Do we know each other?");
+        System.out.println("- Yes (y)");
+        System.out.println("- No (n)");
+
+        while(true) {
+            System.out.print(": ");
+            userInput = sc.nextLine().charAt(0);
+
+            if(userInput != 'y' && userInput != 'n') {
+                System.out.println("Unfortunately, I could not understand you, traveler!");
+            }
+            else {
+                break;
+            }
+        }
+
+        if(userInput == 'y') {
+            System.out.println("\nHm, could you help me remember?");
+
+            System.out.print("Username: ");
+            username = sc.nextLine();
+            System.out.print("Password: ");
+            password = sc.nextLine();
+
+            userLogin(username, password);
+        }
+        else if(userInput == 'n') {
+            System.out.println("\nThen tell me, what is your name traveler?");
+
+            while(true) {
+                System.out.print("Username: ");
+                username = sc.nextLine();
+
+                Postgres db = new Postgres();
+                boolean res = db.checkIfUserExists(username);
+
+                if(!res) {
+                    System.out.println("This username is already taken!");
+                    continue;
+                }
+
+                if(username.length() > 12) {
+                    System.out.println("Your username is too long (max. 12 characters)!");
+                    continue;
+                }
+
+                break;
+            }
+
+            System.out.print("Password: ");
+            password = sc.nextLine();
+            System.out.print("Repeat password: ");
+            String passwordTmp = sc.nextLine();
+
+            while(!Objects.equals(password, passwordTmp)) {
+                System.out.println("\n" + username + ", I think your secret phrases do not match!");
+
+                System.out.print("Password: ");
+                password = sc.nextLine();
+
+                System.out.print("Repeat password: ");
+                passwordTmp = sc.nextLine();
+            }
+
+            userRegistration(username, password);
+        }
+    }
+
+
     public void viewScore() {
         // TODO: load scores from database and display as scoreboard
     }
@@ -122,5 +225,13 @@ public class Gamelogic {
 
     public void store() {
         // TODO: store etc.
+    }
+
+
+    public void closeGame(String username) throws SQLException {
+        System.out.println("\nGoodbye!");
+
+        Postgres db = new Postgres();
+        db.logoutUser(username);
     }
 }

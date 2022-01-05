@@ -3,15 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.31">
     <root id="1">
       <DateStyle>mdy</DateStyle>
-      <Grants>1||-9223372036854775808|c|G
-1||10|c|G
-1||10|C|G
-1||10|T|G
-13753||-9223372036854775808|c|G
-13753||10|c|G
-13753||10|C|G
-13753||10|T|G</Grants>
-      <IntrospectionStateNumber>752</IntrospectionStateNumber>
+      <IntrospectionStateNumber>807</IntrospectionStateNumber>
       <ServerVersion>14.1</ServerVersion>
       <StartupTime>1641294216</StartupTime>
       <TimeZones>true ACDT
@@ -808,7 +800,7 @@ false Zulu
 13388||10|C|G
 13388||-9223372036854775808|U|G
 13388||10|U|G</Grants>
-      <IntrospectionStateNumber>753</IntrospectionStateNumber>
+      <IntrospectionStateNumber>808</IntrospectionStateNumber>
       <ObjectId>16385</ObjectId>
       <OwnerName>mtcguser</OwnerName>
     </database>
@@ -817,47 +809,7 @@ false Zulu
       <ObjectId>13754</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
-    <role id="4" parent="1" name="mtcguser">
-      <CanLogin>1</CanLogin>
-      <ObjectId>16384</ObjectId>
-    </role>
-    <role id="5" parent="1" name="pg_database_owner">
-      <ObjectId>6171</ObjectId>
-    </role>
-    <role id="6" parent="1" name="pg_execute_server_program">
-      <ObjectId>4571</ObjectId>
-    </role>
-    <role id="7" parent="1" name="pg_monitor">
-      <ObjectId>3373</ObjectId>
-      <RoleGrants>3374
-3375
-3377</RoleGrants>
-    </role>
-    <role id="8" parent="1" name="pg_read_all_data">
-      <ObjectId>6181</ObjectId>
-    </role>
-    <role id="9" parent="1" name="pg_read_all_settings">
-      <ObjectId>3374</ObjectId>
-    </role>
-    <role id="10" parent="1" name="pg_read_all_stats">
-      <ObjectId>3375</ObjectId>
-    </role>
-    <role id="11" parent="1" name="pg_read_server_files">
-      <ObjectId>4569</ObjectId>
-    </role>
-    <role id="12" parent="1" name="pg_signal_backend">
-      <ObjectId>4200</ObjectId>
-    </role>
-    <role id="13" parent="1" name="pg_stat_scan_tables">
-      <ObjectId>3377</ObjectId>
-    </role>
-    <role id="14" parent="1" name="pg_write_all_data">
-      <ObjectId>6182</ObjectId>
-    </role>
-    <role id="15" parent="1" name="pg_write_server_files">
-      <ObjectId>4570</ObjectId>
-    </role>
-    <role id="16" parent="1" name="postgres">
+    <role id="4" parent="1" name="postgres">
       <BypassRls>1</BypassRls>
       <CanLogin>1</CanLogin>
       <CreateDb>1</CreateDb>
@@ -865,6 +817,46 @@ false Zulu
       <ObjectId>10</ObjectId>
       <Replication>1</Replication>
       <SuperRole>1</SuperRole>
+    </role>
+    <role id="5" parent="1" name="pg_database_owner">
+      <ObjectId>6171</ObjectId>
+    </role>
+    <role id="6" parent="1" name="pg_read_all_data">
+      <ObjectId>6181</ObjectId>
+    </role>
+    <role id="7" parent="1" name="pg_write_all_data">
+      <ObjectId>6182</ObjectId>
+    </role>
+    <role id="8" parent="1" name="pg_monitor">
+      <ObjectId>3373</ObjectId>
+      <RoleGrants>3374
+3375
+3377</RoleGrants>
+    </role>
+    <role id="9" parent="1" name="pg_read_all_settings">
+      <ObjectId>3374</ObjectId>
+    </role>
+    <role id="10" parent="1" name="pg_read_all_stats">
+      <ObjectId>3375</ObjectId>
+    </role>
+    <role id="11" parent="1" name="pg_stat_scan_tables">
+      <ObjectId>3377</ObjectId>
+    </role>
+    <role id="12" parent="1" name="pg_read_server_files">
+      <ObjectId>4569</ObjectId>
+    </role>
+    <role id="13" parent="1" name="pg_write_server_files">
+      <ObjectId>4570</ObjectId>
+    </role>
+    <role id="14" parent="1" name="pg_execute_server_program">
+      <ObjectId>4571</ObjectId>
+    </role>
+    <role id="15" parent="1" name="pg_signal_backend">
+      <ObjectId>4200</ObjectId>
+    </role>
+    <role id="16" parent="1" name="mtcguser">
+      <CanLogin>1</CanLogin>
+      <ObjectId>16384</ObjectId>
     </role>
     <tablespace id="17" parent="1" name="pg_default">
       <ObjectId>1663</ObjectId>
@@ -4238,74 +4230,373 @@ false Zulu
     <schema id="263" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>753</IntrospectionStateNumber>
+      <IntrospectionStateNumber>808</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>526</StateNumber>
       <OwnerName>postgres</OwnerName>
     </schema>
-    <table id="264" parent="263" name="users">
-      <ObjectId>16386</ObjectId>
-      <StateNumber>743</StateNumber>
+    <table id="264" parent="263" name="cards">
+      <ObjectId>16401</ObjectId>
+      <StateNumber>781</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mtcguser</OwnerName>
     </table>
-    <column id="265" parent="264" name="user_id">
-      <DataType>integer|0s</DataType>
+    <table id="265" parent="263" name="scoreboard">
+      <ObjectId>16409</ObjectId>
+      <StateNumber>785</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>mtcguser</OwnerName>
+    </table>
+    <table id="266" parent="263" name="stack">
+      <ObjectId>16406</ObjectId>
+      <StateNumber>777</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>mtcguser</OwnerName>
+    </table>
+    <table id="267" parent="263" name="trades">
+      <ObjectId>16429</ObjectId>
+      <StateNumber>793</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>mtcguser</OwnerName>
+    </table>
+    <table id="268" parent="263" name="users">
+      <ObjectId>16394</ObjectId>
+      <StateNumber>777</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>mtcguser</OwnerName>
+    </table>
+    <column id="269" parent="264" name="card_id">
+      <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>738</StateNumber>
-      <TypeId>23</TypeId>
+      <StateNumber>765</StateNumber>
+      <TypeId>1043</TypeId>
     </column>
-    <column id="266" parent="264" name="username">
-      <DataType>varchar|0s</DataType>
+    <column id="270" parent="264" name="name">
+      <DataType>varchar(20)|0s</DataType>
+      <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>738</StateNumber>
+      <StateNumber>765</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="267" parent="264" name="pw">
-      <DataType>varchar|0s</DataType>
+    <column id="271" parent="264" name="damage">
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>738</StateNumber>
+      <StateNumber>765</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="272" parent="264" name="type">
+      <DataType>varchar(10)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>765</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="268" parent="264" name="elo">
-      <DataType>integer|0s</DataType>
-      <Position>4</Position>
-      <StateNumber>738</StateNumber>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="269" parent="264" name="coins">
-      <DataType>integer|0s</DataType>
+    <column id="273" parent="264" name="element">
+      <DataType>varchar(10)|0s</DataType>
+      <NotNull>1</NotNull>
       <Position>5</Position>
-      <StateNumber>738</StateNumber>
-      <TypeId>23</TypeId>
+      <StateNumber>765</StateNumber>
+      <TypeId>1043</TypeId>
     </column>
-    <index id="270" parent="264" name="user_pk">
-      <ClassIds>1978</ClassIds>
-      <ColNames>user_id</ColNames>
-      <CollationIds>0</CollationIds>
-      <ObjectId>16391</ObjectId>
+    <index id="274" parent="264" name="pk_cards">
+      <ClassIds>3126</ClassIds>
+      <ColNames>card_id</ColNames>
+      <CollationIds>100</CollationIds>
+      <CollationNames>default</CollationNames>
+      <ObjectId>16404</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>738</StateNumber>
+      <StateNumber>765</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="271" parent="264" name="user_username_uindex">
+    <key id="275" parent="264" name="pk_cards">
+      <ColNames>card_id</ColNames>
+      <ObjectId>16405</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>765</StateNumber>
+      <UnderlyingIndexId>16404</UnderlyingIndexId>
+    </key>
+    <column id="276" parent="265" name="score_id">
+      <DataType>varchar(40)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>773</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="277" parent="265" name="user_id">
+      <DataType>varchar(40)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>773</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="278" parent="265" name="wins">
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>773</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="279" parent="265" name="defeats">
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>773</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="280" parent="265" name="draws">
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>773</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="281" parent="265" name="coins_spent">
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>773</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <foreign-key id="282" parent="265" name="fk_scoreboard_user_id">
+      <ColNames>user_id</ColNames>
+      <ObjectId>16424</ObjectId>
+      <RefColNames>user_id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <RefKeyName>pk_users</RefKeyName>
+      <StateNumber>785</StateNumber>
+      <RefTableId>16394</RefTableId>
+      <RefTableName>users</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <index id="283" parent="265" name="pk_scoreboard">
+      <ClassIds>3126</ClassIds>
+      <ColNames>score_id</ColNames>
+      <CollationIds>100</CollationIds>
+      <CollationNames>default</CollationNames>
+      <ObjectId>16412</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>773</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="284" parent="265" name="pk_scoreboard">
+      <ColNames>score_id</ColNames>
+      <ObjectId>16413</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>773</StateNumber>
+      <UnderlyingIndexId>16412</UnderlyingIndexId>
+    </key>
+    <column id="285" parent="266" name="user_id">
+      <DataType>varchar(40)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>769</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="286" parent="266" name="card_id">
+      <DataType>varchar(40)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>769</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <foreign-key id="287" parent="266" name="fk_stack_user_id">
+      <ColNames>user_id</ColNames>
+      <ObjectId>16414</ObjectId>
+      <RefColNames>user_id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <RefKeyName>pk_users</RefKeyName>
+      <StateNumber>777</StateNumber>
+      <RefTableId>16394</RefTableId>
+      <RefTableName>users</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <foreign-key id="288" parent="266" name="fk_stack_card_id">
+      <ColNames>card_id</ColNames>
+      <ObjectId>16419</ObjectId>
+      <RefColNames>card_id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <RefKeyName>pk_cards</RefKeyName>
+      <StateNumber>781</StateNumber>
+      <RefTableId>16401</RefTableId>
+      <RefTableName>cards</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <column id="289" parent="267" name="trade_id">
+      <DataType>varchar(40)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>789</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="290" parent="267" name="offer_user_id">
+      <DataType>varchar(40)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>789</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="291" parent="267" name="accept_user_id">
+      <DataType>varchar(40)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>789</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="292" parent="267" name="get_card_id">
+      <DataType>varchar(40)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>789</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="293" parent="267" name="give_card_id">
+      <DataType>varchar(40)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>789</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <foreign-key id="294" parent="267" name="fk_trades_offer_user_id">
+      <ColNames>offer_user_id</ColNames>
+      <ObjectId>16434</ObjectId>
+      <RefColNames>user_id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <RefKeyName>pk_users</RefKeyName>
+      <StateNumber>793</StateNumber>
+      <RefTableId>16394</RefTableId>
+      <RefTableName>users</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <foreign-key id="295" parent="267" name="fk_trades_accept_user_id">
+      <ColNames>accept_user_id</ColNames>
+      <ObjectId>16439</ObjectId>
+      <RefColNames>user_id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <RefKeyName>pk_users</RefKeyName>
+      <StateNumber>797</StateNumber>
+      <RefTableId>16394</RefTableId>
+      <RefTableName>users</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <foreign-key id="296" parent="267" name="fk_trades_get_card_id">
+      <ColNames>get_card_id</ColNames>
+      <ObjectId>16444</ObjectId>
+      <RefColNames>card_id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <RefKeyName>pk_cards</RefKeyName>
+      <StateNumber>801</StateNumber>
+      <RefTableId>16401</RefTableId>
+      <RefTableName>cards</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <foreign-key id="297" parent="267" name="fk_trades_give_card_id">
+      <ColNames>give_card_id</ColNames>
+      <ObjectId>16449</ObjectId>
+      <RefColNames>card_id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <RefKeyName>pk_cards</RefKeyName>
+      <StateNumber>805</StateNumber>
+      <RefTableId>16401</RefTableId>
+      <RefTableName>cards</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <index id="298" parent="267" name="pk_trades">
+      <ClassIds>3126</ClassIds>
+      <ColNames>trade_id</ColNames>
+      <CollationIds>100</CollationIds>
+      <CollationNames>default</CollationNames>
+      <ObjectId>16432</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>789</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="299" parent="267" name="pk_trades">
+      <ColNames>trade_id</ColNames>
+      <ObjectId>16433</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>789</StateNumber>
+      <UnderlyingIndexId>16432</UnderlyingIndexId>
+    </key>
+    <column id="300" parent="268" name="user_id">
+      <DataType>varchar(40)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>761</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="301" parent="268" name="username">
+      <DataType>varchar(12)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>761</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="302" parent="268" name="password">
+      <DataType>varchar(200)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>761</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="303" parent="268" name="elo">
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>761</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="304" parent="268" name="coins">
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>761</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="305" parent="268" name="logged">
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>761</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <index id="306" parent="268" name="pk_users">
+      <ClassIds>3126</ClassIds>
+      <ColNames>user_id</ColNames>
+      <CollationIds>100</CollationIds>
+      <CollationNames>default</CollationNames>
+      <ObjectId>16397</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>761</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="307" parent="268" name="uc_users_username">
       <ClassIds>3126</ClassIds>
       <ColNames>username</ColNames>
       <CollationIds>100</CollationIds>
       <CollationNames>default</CollationNames>
-      <ObjectId>16393</ObjectId>
-      <StateNumber>739</StateNumber>
+      <ObjectId>16399</ObjectId>
+      <StateNumber>761</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="272" parent="264" name="user_pk">
+    <key id="308" parent="268" name="pk_users">
       <ColNames>user_id</ColNames>
-      <ObjectId>16392</ObjectId>
+      <ObjectId>16398</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>738</StateNumber>
-      <UnderlyingIndexId>16391</UnderlyingIndexId>
+      <StateNumber>761</StateNumber>
+      <UnderlyingIndexId>16397</UnderlyingIndexId>
+    </key>
+    <key id="309" parent="268" name="uc_users_username">
+      <ColNames>username</ColNames>
+      <ObjectId>16400</ObjectId>
+      <StateNumber>761</StateNumber>
+      <UnderlyingIndexId>16399</UnderlyingIndexId>
     </key>
   </database-model>
 </dataSource>

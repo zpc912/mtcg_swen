@@ -32,6 +32,9 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    public String getPassword() {
+        return password;
+    }
 
 
     public void setELO(int ELO) {
@@ -58,6 +61,7 @@ public class User {
     public void setDeck() {
         this.deck = new Deck();
     }
+    public Deck getDeck() { return deck; }
 
 
     public void viewDeck() {

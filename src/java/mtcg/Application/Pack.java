@@ -1,11 +1,11 @@
 package mtcg.Application;
 
-public class Package {
+public class Pack {
     private Card[] packageCards;
     private int price;
 
 
-    public Package() {
+    public Pack() {
         setPackageCards();
         setPackagePrice();
     }

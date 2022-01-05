@@ -1,55 +1,42 @@
 package mtcg.Application;
 import mtcg.Enum.elementType;
+import mtcg.Enum.cardType;
 
-public abstract class Card {
+public class Card {
     private String name;
     private int damage;
+    private cardType type;
     private elementType element;
 
 
-    /*public Card(String name, int damage, elementType element) {
+    public Card(String name, int damage, cardType type, elementType element) {
         setName(name);
         setDamage(damage);
+        setCardtype(type);
         setElement(element);
-    }*/
-
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getName() {
-        return name;
     }
 
 
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-    public int getDamage() {
-        return damage;
-    }
+    public void setName(String name) { this.name = name; }
+    public String getName() { return name; }
 
 
-    public void setElement(elementType element) {
-        this.element = element;
-    }
-    public elementType getElement() {
-        return element;
-    }
+    public void setDamage(int damage) { this.damage = damage; }
+    public int getDamage() { return damage; }
 
 
-    public String getCardType() {
-        String cardClass = getClass().toString();
-        String cardType = cardClass.substring(19);
+    public void setCardtype(cardType type) { this.type = type; }
+    public cardType getCardtype() { return type; }
 
-        return cardType;
-    }
+
+    public void setElement(elementType element) { this.element = element; }
+    public elementType getElement() { return element; }
 
 
     public String getCardInfo() {
         return "Card Name: " + getName() + "\n" +
-                "Card Type: " + getCardType() + "\n" +
-                "Element: " + getElement() + "\n" +
-                "Damage: " + getDamage() + "\n";
+                "Damage: " + getDamage() + "\n" +
+                "Card Type: " + getCardtype() + "\n" +
+                "Element: " + getElement() + "\n";
     }
 }
