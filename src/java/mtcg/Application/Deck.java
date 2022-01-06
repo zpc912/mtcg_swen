@@ -24,6 +24,20 @@ public class Deck {
     }
 
 
+    public void printDeck() {
+        if(checkDeck()) {
+            System.out.println("\nYour deck is empty!");
+        }
+        else {
+            System.out.println("\nYour deck:\n");
+
+            for(int i=0; i<deckCards.length; i++) {
+                System.out.println(deckCards[i].getCardInfo() + "\n");
+            }
+        }
+    }
+
+
     public void addCardToDeck(Card cardToAdd) {
         for(int i=0; i<deckCards.length; i++) {
             if(deckCards[i] == null) {
@@ -31,6 +45,17 @@ public class Deck {
                 break;
             }
         }
+    }
+
+
+    public Deck initializeDeckAfterLogin(Card[] cards) {
+        Deck deck = new Deck();
+
+        for(int i=0; i<cards.length; i++) {
+            deck.addCardToDeck(cards[i]);
+        }
+
+        return deck;
     }
 
 

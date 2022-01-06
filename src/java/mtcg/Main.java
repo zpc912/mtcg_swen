@@ -1,7 +1,6 @@
 package mtcg;
 import mtcg.Application.*;
 import mtcg.Database.Postgres;
-
 import java.io.IOException;
 import java.sql.SQLException;
 

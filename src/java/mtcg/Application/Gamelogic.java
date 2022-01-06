@@ -2,6 +2,7 @@ package mtcg.Application;
 import mtcg.Database.Postgres;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -15,6 +16,15 @@ public class Gamelogic {
 
         if(res) {
             user = db.fetchUserData(username);
+
+            ArrayList<Card> tmpStack = db.initializeStack(user.getUsername());
+            user.addCardsToStack(tmpStack);
+
+            Card[] deck = db.initializeDeck(user.getUsername());
+            if(deck != null) {
+                user.addCardsToDeck(deck);
+            }
+
             gameMenu();
         }
         else {
@@ -26,6 +36,7 @@ public class Gamelogic {
     public void userRegistration(String username, String password) throws IOException, SQLException {
         Postgres db = new Postgres();
         boolean res = db.registerUser(username, password);
+        db.addUserToScoreboard(username);
 
         if(res) {
             user = new User(username, password, 100, 20);
@@ -63,7 +74,7 @@ public class Gamelogic {
             userInput = sc.nextLine().charAt(0);
 
             if(userInput != 'f' && userInput != 'p' && userInput != 's' && userInput != 'm' && userInput != 'q') {
-                System.out.println("Please select one of the options above.");
+                System.out.println("\nPlease select one of the options above.");
             }
             else {
                 break;
@@ -80,7 +91,7 @@ public class Gamelogic {
             viewScore();
         }
         else if(userInput == 'm') {
-            // TODO: go to store
+            marketplace();
         }
         else if(userInput == 'q') {
             closeGame(user.getUsername());
@@ -108,7 +119,7 @@ public class Gamelogic {
             userInput = sc.nextLine().charAt(0);
 
             if(userInput != 's' && userInput != 'd' && userInput != 'e' && userInput != 'b') {
-                System.out.println("I couldn't understand you. Can you repeat that?");
+                System.out.println("\nI couldn't understand you. Can you repeat that?");
             }
             else {
                 break;
@@ -122,7 +133,7 @@ public class Gamelogic {
             user.viewDeck();
         }
         else if(userInput == 'e') {
-            System.out.println("Do you want to clean (c), add (a) or remove (r) cards from your deck?");
+            System.out.print("Do you want to clean (c), add (a) or remove (r) cards from your deck?");
 
             while(true) {
                 System.out.println(": ");
@@ -141,6 +152,8 @@ public class Gamelogic {
         else if(userInput == 'b') {
             gameMenu();
         }
+
+        editProfile();
     }
 
 
@@ -158,7 +171,7 @@ public class Gamelogic {
             userInput = sc.nextLine().charAt(0);
 
             if(userInput != 'y' && userInput != 'n') {
-                System.out.println("Unfortunately, I could not understand you, traveler!");
+                System.out.println("\nUnfortunately, I could not understand you, traveler!");
             }
             else {
                 break;
@@ -223,12 +236,89 @@ public class Gamelogic {
     }
 
 
-    public void store() {
-        // TODO: store etc.
+    public void marketplace() throws SQLException {
+        Scanner sc = new Scanner(System.in);
+        char userInput;
+
+        System.out.println("\nWelcome to the marketplace, traveler!");
+        System.out.println("What would you like to do?");
+        System.out.println("- Buy a package (p)");
+        System.out.println("- Trade cards with another user (t)");
+        System.out.println("- Go back (b)");
+
+        while(true) {
+            System.out.print(": ");
+            userInput = sc.nextLine().charAt(0);
+
+            if(userInput != 'p' && userInput != 't' && userInput != 'b') {
+                System.out.println("\nPlease select one of the options above!");
+            }
+            else {
+                break;
+            }
+        }
+
+        if(userInput == 'p') {
+            System.out.println("\nA new package costs 5 coins");
+            System.out.println("Do you want to buy one? (y/n)");
+
+            while(true) {
+                System.out.print(": ");
+                userInput = sc.nextLine().charAt(0);
+
+                if(userInput != 'y' && userInput != 'n') {
+                    System.out.println("Invalid input!");
+                }
+                else {
+                    break;
+                }
+            }
+
+            if(userInput == 'y') {
+                Postgres db = new Postgres();
+                boolean allowPurchase = db.checkBalance(user.getUsername());
+
+                if(allowPurchase) {
+                    Card[] packCards = db.buyPackage(user.getUsername());
+
+                    if(packCards != null) {
+                        db.insertNewCards(packCards, user.getUsername());
+                        ArrayList<Card> tmpStack = db.initializeStack(user.getUsername());
+                        user.addCardsToStack(tmpStack);
+
+                        System.out.println("\nOpening package . . .");
+                        System.out.println("This package contains:\n");
+
+                        for(int i=0; i<packCards.length; i++) {
+                            System.out.println(packCards[i].getCardInfo() + "\n");
+                        }
+                    }
+                    else {
+                        //System.out.println("ERROR WITH CARD PURCHASE");
+                    }
+                }
+                else {
+                    System.out.println("Unfortunately, you do not have enough coins to buy a package!");
+                    System.out.println("If you want new cards maybe consider trading with someone else ;)");
+                    marketplace();
+                }
+            }
+            else {
+                marketplace();
+            }
+        }
+        else if(userInput == 't') {
+            // TODO: trade cards with other users
+            System.out.println("TRADING NOT AVAILABLE YET");
+            gameMenu();
+        }
+        else if(userInput == 'b') {
+            gameMenu();
+        }
     }
 
 
-    public void closeGame(String username) throws SQLException {
+    public void closeGame(String username) {
         System.out.println("\nGoodbye!");
 
         Postgres db = new Postgres();

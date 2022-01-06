@@ -65,14 +65,7 @@ public class User {
 
 
     public void viewDeck() {
-        if(deck.checkDeck()) {
-            System.out.println("deck is empty");
-            // TODO: logic
-        }
-        else {
-            System.out.println("deck is not empty");
-            // TODO: logic
-        }
+        deck.printDeck();
     }
 
 
@@ -96,7 +89,31 @@ public class User {
     }
 
 
-    public void viewStack() {
-        // TODO: print stack
+    public void addCardsToStack(ArrayList<Card> cards) {
+        this.stack = (ArrayList<Card>)cards.clone();
+    }
+
+
+    public void addCardsToDeck(Card[] deckCards) {
+        this.deck = deck.initializeDeckAfterLogin(deckCards);
+    }
+
+
+    public boolean viewStack() {
+        Card[] cardsFromStack = this.stack.toArray(new Card[this.stack.size()]);
+
+        if(cardsFromStack.length == 0) {
+            System.out.println("\nLooks like your stack is empty!");
+            System.out.println("You can acquire cards by buying a package in the marketplace.");
+
+            return false;
+        }
+
+        System.out.println("\nYour stack:\n");
+        for(int i=0; i<cardsFromStack.length; i++) {
+            System.out.println(cardsFromStack[i].getCardInfo() + "\n");
+        }
+
+        return true;
     }
 }

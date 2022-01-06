@@ -3,9 +3,9 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.31">
     <root id="1">
       <DateStyle>mdy</DateStyle>
-      <IntrospectionStateNumber>807</IntrospectionStateNumber>
+      <IntrospectionStateNumber>889</IntrospectionStateNumber>
       <ServerVersion>14.1</ServerVersion>
-      <StartupTime>1641294216</StartupTime>
+      <StartupTime>1641463978</StartupTime>
       <TimeZones>true ACDT
 true ACSST
 false ACST
@@ -800,7 +800,7 @@ false Zulu
 13388||10|C|G
 13388||-9223372036854775808|U|G
 13388||10|U|G</Grants>
-      <IntrospectionStateNumber>808</IntrospectionStateNumber>
+      <IntrospectionStateNumber>890</IntrospectionStateNumber>
       <ObjectId>16385</ObjectId>
       <OwnerName>mtcguser</OwnerName>
     </database>
@@ -809,29 +809,24 @@ false Zulu
       <ObjectId>13754</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
-    <role id="4" parent="1" name="postgres">
-      <BypassRls>1</BypassRls>
+    <role id="4" parent="1" name="mtcguser">
       <CanLogin>1</CanLogin>
-      <CreateDb>1</CreateDb>
-      <CreateRole>1</CreateRole>
-      <ObjectId>10</ObjectId>
-      <Replication>1</Replication>
-      <SuperRole>1</SuperRole>
+      <ObjectId>16384</ObjectId>
     </role>
     <role id="5" parent="1" name="pg_database_owner">
       <ObjectId>6171</ObjectId>
     </role>
-    <role id="6" parent="1" name="pg_read_all_data">
-      <ObjectId>6181</ObjectId>
+    <role id="6" parent="1" name="pg_execute_server_program">
+      <ObjectId>4571</ObjectId>
     </role>
-    <role id="7" parent="1" name="pg_write_all_data">
-      <ObjectId>6182</ObjectId>
-    </role>
-    <role id="8" parent="1" name="pg_monitor">
+    <role id="7" parent="1" name="pg_monitor">
       <ObjectId>3373</ObjectId>
       <RoleGrants>3374
 3375
 3377</RoleGrants>
+    </role>
+    <role id="8" parent="1" name="pg_read_all_data">
+      <ObjectId>6181</ObjectId>
     </role>
     <role id="9" parent="1" name="pg_read_all_settings">
       <ObjectId>3374</ObjectId>
@@ -839,24 +834,29 @@ false Zulu
     <role id="10" parent="1" name="pg_read_all_stats">
       <ObjectId>3375</ObjectId>
     </role>
-    <role id="11" parent="1" name="pg_stat_scan_tables">
-      <ObjectId>3377</ObjectId>
-    </role>
-    <role id="12" parent="1" name="pg_read_server_files">
+    <role id="11" parent="1" name="pg_read_server_files">
       <ObjectId>4569</ObjectId>
     </role>
-    <role id="13" parent="1" name="pg_write_server_files">
-      <ObjectId>4570</ObjectId>
-    </role>
-    <role id="14" parent="1" name="pg_execute_server_program">
-      <ObjectId>4571</ObjectId>
-    </role>
-    <role id="15" parent="1" name="pg_signal_backend">
+    <role id="12" parent="1" name="pg_signal_backend">
       <ObjectId>4200</ObjectId>
     </role>
-    <role id="16" parent="1" name="mtcguser">
+    <role id="13" parent="1" name="pg_stat_scan_tables">
+      <ObjectId>3377</ObjectId>
+    </role>
+    <role id="14" parent="1" name="pg_write_all_data">
+      <ObjectId>6182</ObjectId>
+    </role>
+    <role id="15" parent="1" name="pg_write_server_files">
+      <ObjectId>4570</ObjectId>
+    </role>
+    <role id="16" parent="1" name="postgres">
+      <BypassRls>1</BypassRls>
       <CanLogin>1</CanLogin>
-      <ObjectId>16384</ObjectId>
+      <CreateDb>1</CreateDb>
+      <CreateRole>1</CreateRole>
+      <ObjectId>10</ObjectId>
+      <Replication>1</Replication>
+      <SuperRole>1</SuperRole>
     </role>
     <tablespace id="17" parent="1" name="pg_default">
       <ObjectId>1663</ObjectId>
@@ -4230,7 +4230,7 @@ false Zulu
     <schema id="263" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>808</IntrospectionStateNumber>
+      <IntrospectionStateNumber>890</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>526</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4242,20 +4242,20 @@ false Zulu
       <OwnerName>mtcguser</OwnerName>
     </table>
     <table id="265" parent="263" name="scoreboard">
-      <ObjectId>16409</ObjectId>
-      <StateNumber>785</StateNumber>
+      <ObjectId>16454</ObjectId>
+      <StateNumber>863</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mtcguser</OwnerName>
     </table>
-    <table id="266" parent="263" name="stack">
-      <ObjectId>16406</ObjectId>
-      <StateNumber>777</StateNumber>
-      <AccessMethodId>2</AccessMethodId>
-      <OwnerName>mtcguser</OwnerName>
-    </table>
-    <table id="267" parent="263" name="trades">
+    <table id="266" parent="263" name="trades">
       <ObjectId>16429</ObjectId>
       <StateNumber>793</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>mtcguser</OwnerName>
+    </table>
+    <table id="267" parent="263" name="user_cards">
+      <ObjectId>16406</ObjectId>
+      <StateNumber>849</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mtcguser</OwnerName>
     </table>
@@ -4322,145 +4322,98 @@ false Zulu
       <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>773</StateNumber>
+      <StateNumber>863</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="277" parent="265" name="user_id">
-      <DataType>varchar(40)|0s</DataType>
+    <column id="277" parent="265" name="username">
+      <DataType>varchar(12)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>773</StateNumber>
+      <StateNumber>863</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="278" parent="265" name="wins">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>773</StateNumber>
+      <StateNumber>863</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="279" parent="265" name="defeats">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>773</StateNumber>
+      <StateNumber>863</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="280" parent="265" name="draws">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
-      <StateNumber>773</StateNumber>
+      <StateNumber>863</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="281" parent="265" name="coins_spent">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
-      <StateNumber>773</StateNumber>
+      <StateNumber>863</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <foreign-key id="282" parent="265" name="fk_scoreboard_user_id">
-      <ColNames>user_id</ColNames>
-      <ObjectId>16424</ObjectId>
-      <RefColNames>user_id</RefColNames>
-      <RefColPositions>1</RefColPositions>
-      <RefKeyName>pk_users</RefKeyName>
-      <StateNumber>785</StateNumber>
-      <RefTableId>16394</RefTableId>
-      <RefTableName>users</RefTableName>
-      <RefTableKind>table</RefTableKind>
-    </foreign-key>
-    <index id="283" parent="265" name="pk_scoreboard">
+    <index id="282" parent="265" name="pk_scoreboard">
       <ClassIds>3126</ClassIds>
       <ColNames>score_id</ColNames>
       <CollationIds>100</CollationIds>
       <CollationNames>default</CollationNames>
-      <ObjectId>16412</ObjectId>
+      <ObjectId>16457</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>773</StateNumber>
+      <StateNumber>863</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="284" parent="265" name="pk_scoreboard">
+    <key id="283" parent="265" name="pk_scoreboard">
       <ColNames>score_id</ColNames>
-      <ObjectId>16413</ObjectId>
+      <ObjectId>16458</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>773</StateNumber>
-      <UnderlyingIndexId>16412</UnderlyingIndexId>
+      <StateNumber>863</StateNumber>
+      <UnderlyingIndexId>16457</UnderlyingIndexId>
     </key>
-    <column id="285" parent="266" name="user_id">
-      <DataType>varchar(40)|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>769</StateNumber>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="286" parent="266" name="card_id">
-      <DataType>varchar(40)|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StateNumber>769</StateNumber>
-      <TypeId>1043</TypeId>
-    </column>
-    <foreign-key id="287" parent="266" name="fk_stack_user_id">
-      <ColNames>user_id</ColNames>
-      <ObjectId>16414</ObjectId>
-      <RefColNames>user_id</RefColNames>
-      <RefColPositions>1</RefColPositions>
-      <RefKeyName>pk_users</RefKeyName>
-      <StateNumber>777</StateNumber>
-      <RefTableId>16394</RefTableId>
-      <RefTableName>users</RefTableName>
-      <RefTableKind>table</RefTableKind>
-    </foreign-key>
-    <foreign-key id="288" parent="266" name="fk_stack_card_id">
-      <ColNames>card_id</ColNames>
-      <ObjectId>16419</ObjectId>
-      <RefColNames>card_id</RefColNames>
-      <RefColPositions>1</RefColPositions>
-      <RefKeyName>pk_cards</RefKeyName>
-      <StateNumber>781</StateNumber>
-      <RefTableId>16401</RefTableId>
-      <RefTableName>cards</RefTableName>
-      <RefTableKind>table</RefTableKind>
-    </foreign-key>
-    <column id="289" parent="267" name="trade_id">
+    <column id="284" parent="266" name="trade_id">
       <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StateNumber>789</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="290" parent="267" name="offer_user_id">
+    <column id="285" parent="266" name="offer_user_id">
       <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>789</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="291" parent="267" name="accept_user_id">
+    <column id="286" parent="266" name="accept_user_id">
       <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>789</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="292" parent="267" name="get_card_id">
+    <column id="287" parent="266" name="get_card_id">
       <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>789</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="293" parent="267" name="give_card_id">
+    <column id="288" parent="266" name="give_card_id">
       <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StateNumber>789</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <foreign-key id="294" parent="267" name="fk_trades_offer_user_id">
+    <foreign-key id="289" parent="266" name="fk_trades_offer_user_id">
       <ColNames>offer_user_id</ColNames>
       <ObjectId>16434</ObjectId>
       <RefColNames>user_id</RefColNames>
@@ -4471,7 +4424,7 @@ false Zulu
       <RefTableName>users</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
-    <foreign-key id="295" parent="267" name="fk_trades_accept_user_id">
+    <foreign-key id="290" parent="266" name="fk_trades_accept_user_id">
       <ColNames>accept_user_id</ColNames>
       <ObjectId>16439</ObjectId>
       <RefColNames>user_id</RefColNames>
@@ -4482,7 +4435,7 @@ false Zulu
       <RefTableName>users</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
-    <foreign-key id="296" parent="267" name="fk_trades_get_card_id">
+    <foreign-key id="291" parent="266" name="fk_trades_get_card_id">
       <ColNames>get_card_id</ColNames>
       <ObjectId>16444</ObjectId>
       <RefColNames>card_id</RefColNames>
@@ -4493,7 +4446,7 @@ false Zulu
       <RefTableName>cards</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
-    <foreign-key id="297" parent="267" name="fk_trades_give_card_id">
+    <foreign-key id="292" parent="266" name="fk_trades_give_card_id">
       <ColNames>give_card_id</ColNames>
       <ObjectId>16449</ObjectId>
       <RefColNames>card_id</RefColNames>
@@ -4504,7 +4457,7 @@ false Zulu
       <RefTableName>cards</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
-    <index id="298" parent="267" name="pk_trades">
+    <index id="293" parent="266" name="pk_trades">
       <ClassIds>3126</ClassIds>
       <ColNames>trade_id</ColNames>
       <CollationIds>100</CollationIds>
@@ -4515,13 +4468,56 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="299" parent="267" name="pk_trades">
+    <key id="294" parent="266" name="pk_trades">
       <ColNames>trade_id</ColNames>
       <ObjectId>16433</ObjectId>
       <Primary>1</Primary>
       <StateNumber>789</StateNumber>
       <UnderlyingIndexId>16432</UnderlyingIndexId>
     </key>
+    <column id="295" parent="267" name="user_id">
+      <DataType>varchar(40)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>769</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="296" parent="267" name="card_id">
+      <DataType>varchar(40)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>769</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="297" parent="267" name="in_deck">
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>887</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <foreign-key id="298" parent="267" name="fk_stack_user_id">
+      <ColNames>user_id</ColNames>
+      <ObjectId>16414</ObjectId>
+      <RefColNames>user_id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <RefKeyName>pk_users</RefKeyName>
+      <StateNumber>777</StateNumber>
+      <RefTableId>16394</RefTableId>
+      <RefTableName>users</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <foreign-key id="299" parent="267" name="fk_stack_card_id">
+      <ColNames>card_id</ColNames>
+      <ObjectId>16419</ObjectId>
+      <RefColNames>card_id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <RefKeyName>pk_cards</RefKeyName>
+      <StateNumber>781</StateNumber>
+      <RefTableId>16401</RefTableId>
+      <RefTableName>cards</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
     <column id="300" parent="268" name="user_id">
       <DataType>varchar(40)|0s</DataType>
       <NotNull>1</NotNull>

@@ -1,5 +1,6 @@
 package mtcg.Application;
-import mtcg.Enum.*;
+import mtcg.Database.Postgres;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -7,9 +8,9 @@ public class CardGenerator {
     private Card[] allCards;
 
 
-    public CardGenerator() {
+    public CardGenerator() throws SQLException {
         // MONSTER CARDS:
-        Card stoneteeth = new Card("Stoneteeth", 20, cardType.MONSTER, elementType.NORMAL);
+        /*Card stoneteeth = new Card("Stoneteeth", 20, cardType.MONSTER, elementType.NORMAL);
         Card nightspawn = new Card("Nightspawn", 24, cardType.MONSTER, elementType.NORMAL);
         Card dustghoul = new Card("Dustghoul", 25, cardType.MONSTER, elementType.FIRE);
         Card hellface = new Card("Hellface", 23, cardType.MONSTER, elementType.FIRE);
@@ -37,7 +38,11 @@ public class CardGenerator {
         allCards[8] = fireFingers;
         allCards[9] = phoenixBreath;
         allCards[10] = waterRush;
-        allCards[11] = surge;
+        allCards[11] = surge;*/
+
+
+        Postgres db = new Postgres();
+        allCards = db.getAllCards();
     }
 
 

@@ -1,17 +1,19 @@
 package mtcg.Application;
 
+import java.sql.SQLException;
+
 public class Pack {
     private Card[] packageCards;
     private int price;
 
 
-    public Pack() {
+    public Pack() throws SQLException {
         setPackageCards();
         setPackagePrice();
     }
 
 
-    public void setPackageCards() {
+    public void setPackageCards() throws SQLException {
         CardGenerator cg = new CardGenerator();
         packageCards = cg.shuffleCards();
     }
