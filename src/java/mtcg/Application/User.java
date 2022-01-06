@@ -64,23 +64,27 @@ public class User {
     public Deck getDeck() { return deck; }
 
 
+    public Card[] getDeckCards() {
+        Card[] deckCards = deck.getDeckCards();
+
+        return deckCards;
+    }
+
+
+    public Card[] getStackCards() {
+        Card[] stackCards = this.stack.toArray(new Card[this.stack.size()]);
+
+        return stackCards;
+    }
+
+
     public void viewDeck() {
         deck.printDeck();
     }
 
 
-    public void editDeck(char deckOption) {
-        switch(deckOption) {
-            case 'c':
-                deck.cleanDeck();
-            case 'a':
-                // TODO: select card to add to deck
-                break;
-
-            case 'r':
-                // TODO: select card to remove from deck
-                break;
-        }
+    public void deckReselection(Card[] newCardsForDeck) {
+        addCardsToDeck(newCardsForDeck);
     }
 
 
@@ -95,7 +99,19 @@ public class User {
 
 
     public void addCardsToDeck(Card[] deckCards) {
-        this.deck = deck.initializeDeckAfterLogin(deckCards);
+        this.deck = deck.initializeDeck(deckCards);
+    }
+
+
+    public boolean checkStack() {
+        Card[] cardsFromStack = this.stack.toArray(new Card[this.stack.size()]);
+
+        if(cardsFromStack.length == 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
 

@@ -496,4 +496,82 @@ public class Postgres {
 
         return null;
     }
+
+
+    public void removeOldDeck(String username) {
+        try {
+            String user_id = getUserId(username);
+
+            PreparedStatement stmt = conn.prepareStatement("UPDATE user_cards SET in_deck = ? WHERE user_id = ?");
+            stmt.setInt(1, 0);
+            stmt.setString(2, user_id);
+            stmt.executeUpdate();
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public Card[] getSelectedCards(String[] selectedCards) {
+        try {
+            Card[] newDeckCards = new Card[4];
+            String[] cardIds = new String[selectedCards.length];
+
+            for(int i=0; i<selectedCards.length; i++) {
+                PreparedStatement stmt = conn.prepareStatement("SELECT card_id FROM cards WHERE name = ?");
+                stmt.setString(1, selectedCards[i]);
+                ResultSet rs = stmt.executeQuery();
+
+                if(rs.next()) {
+                    cardIds[i] = rs.getString("card_id");
+                }
+
+                stmt.close();
+            }
+
+            for(int i=0; i<newDeckCards.length; i++) {
+                Card currCard = getCardById(cardIds[i]);
+                newDeckCards[i] = currCard;
+            }
+
+            return newDeckCards;
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    public void selectDeck(Card[] newDeck) {
+        try {
+            String[] cardIds = new String[newDeck.length];
+
+            for(int i=0; i<newDeck.length; i++) {
+                PreparedStatement stmt = conn.prepareStatement("SELECT card_id FROM cards WHERE name = ?");
+                stmt.setString(1, newDeck[i].getName());
+                ResultSet rs = stmt.executeQuery();
+
+                if(rs.next()) {
+                    cardIds[i] = rs.getString("card_id");
+                }
+
+                stmt.close();
+            }
+
+            for(int i=0; i<newDeck.length; i++) {
+                PreparedStatement stmt = conn.prepareStatement("UPDATE user_cards SET in_deck = ? WHERE card_id = ?");
+                stmt.setInt(1, 1);
+                stmt.setString(2, cardIds[i]);
+                stmt.executeUpdate();
+                stmt.close();
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

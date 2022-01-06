@@ -3,6 +3,7 @@ import mtcg.Database.Postgres;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -23,6 +24,7 @@ public class Gamelogic {
             Card[] deck = db.initializeDeck(user.getUsername());
             if(deck != null) {
                 user.addCardsToDeck(deck);
+                db.selectDeck(deck);
             }
 
             gameMenu();
@@ -133,21 +135,82 @@ public class Gamelogic {
             user.viewDeck();
         }
         else if(userInput == 'e') {
-            System.out.print("Do you want to clean (c), add (a) or remove (r) cards from your deck?");
+            System.out.println("\nDo you want to clean (c) or re-select (r) your deck?");
 
             while(true) {
-                System.out.println(": ");
+                System.out.print(": ");
                 userInput = sc.nextLine().charAt(0);
 
-                if(userInput != 'c' && userInput != 'a' && userInput != 'r') {
-                    System.out.println("I can't figure out what you mean.");
+                if(userInput != 'c' && userInput != 'r') {
+                    System.out.println("\nI can't figure out what you mean.");
                 }
                 else {
                     break;
                 }
             }
 
-            user.editDeck(userInput);
+            if(userInput == 'c') {
+                Postgres db = new Postgres();
+                user.deleteDeck();
+                db.removeOldDeck(user.getUsername());
+
+                System.out.println("\nDeck successfully cleaned!");
+            }
+            else {
+                if(!user.checkStack()) {
+                    System.out.println("\nLooks like your stack is empty!");
+                    System.out.println("You can acquire cards by buying a package in the marketplace.");
+                    editProfile();
+                }
+
+                String[] selection = new String[4];
+                String cardNum;
+                int ctr = 0;
+                System.out.println("\nSelect new cards from your stack:\n");
+
+                Card[] stackCards = user.getStackCards();
+                String[] stackCardsNames = new String[stackCards.length];
+                for(int i=0; i<stackCards.length; i++) {
+                    System.out.println(">> CARD #" + (i+1) + " (PRESS \"" + (i+1) + "\" FOR THIS CARD) <<");
+                    System.out.println(stackCards[i].getCardInfo());
+                    stackCardsNames[i] = stackCards[i].getName();
+                }
+
+                while(true) {
+                    if(ctr == 4) {
+                        break;
+                    }
+
+                    System.out.print(": ");
+                    cardNum = sc.nextLine();
+
+                    if(!cardNum.matches("\\d+")) {
+                        System.out.println("\nPlease type in a number!");
+                        continue;
+                    }
+                    else if(Arrays.asList(selection).contains(cardNum)) {
+                        System.out.println("\nYou cannot choose the same card twice!");
+                        continue;
+                    }
+                    else {
+                        selection[ctr] = cardNum;
+                        int tmp = Integer.parseInt(cardNum);
+                        stackCardsNames[ctr] = stackCards[tmp-1].getName();
+                    }
+
+                    ctr++;
+                }
+
+                Postgres db = new Postgres();
+                Card[] newDeck = db.getSelectedCards(stackCardsNames);
+
+                user.deleteDeck();
+                db.removeOldDeck(user.getUsername());
+                user.deckReselection(newDeck);
+                db.selectDeck(newDeck);
+
+                System.out.println("\nGood choices you've made!");
+            }
         }
         else if(userInput == 'b') {
             gameMenu();
@@ -323,5 +386,7 @@ public class Gamelogic {
 
         Postgres db = new Postgres();
         db.logoutUser(username);
+
+        System.exit(0);
     }
 }

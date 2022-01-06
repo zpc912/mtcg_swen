@@ -9,6 +9,11 @@ public class Deck {
     }
 
 
+    public Card[] getDeckCards() {
+        return deckCards;
+    }
+
+
     public boolean checkDeck() {
         boolean deckIsEmpty = true;
 
@@ -38,17 +43,7 @@ public class Deck {
     }
 
 
-    public void addCardToDeck(Card cardToAdd) {
-        for(int i=0; i<deckCards.length; i++) {
-            if(deckCards[i] == null) {
-                deckCards[i] = cardToAdd;
-                break;
-            }
-        }
-    }
-
-
-    public Deck initializeDeckAfterLogin(Card[] cards) {
+    public Deck initializeDeck(Card[] cards) {
         Deck deck = new Deck();
 
         for(int i=0; i<cards.length; i++) {
@@ -59,8 +54,13 @@ public class Deck {
     }
 
 
-    public void removeCardFromDeck(Card cardToRemove) {
-        // TODO: remove card from deck
+    public void addCardToDeck(Card cardToAdd) {
+        for(int i=0; i<deckCards.length; i++) {
+            if(deckCards[i] == null) {
+                deckCards[i] = cardToAdd;
+                break;
+            }
+        }
     }
 
 
@@ -68,7 +68,5 @@ public class Deck {
         for(int i=0; i<deckCards.length; i++) {
             deckCards[i] = null;
         }
-
-        System.out.println("Deck successfully cleaned!");
     }
 }
