@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 import org.mindrot.jbcrypt.BCrypt;
+
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.xml.transform.Result;
 
 public class Postgres {
@@ -573,5 +575,46 @@ public class Postgres {
         catch(SQLException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public ArrayList<String> getOpponents(String username) {
+        try {
+            String id = getUserId(username);
+
+            PreparedStatement stmt = conn.prepareStatement("SELECT user_id FROM user_cards WHERE in_deck = ?");
+            stmt.setInt(1, 1);
+            ResultSet rs = stmt.executeQuery();
+
+            ArrayList<String> userIds = new ArrayList<>();
+            while(rs.next()) {
+                if(!userIds.contains(rs.getString("user_id"))) {
+                    userIds.add(rs.getString("user_id"));
+                }
+            }
+
+            stmt.close();
+
+
+            ArrayList<String> opponentList = new ArrayList<>();
+            for(int i=0; i<userIds.size(); i++) {
+                stmt = conn.prepareStatement("SELECT username FROM users WHERE user_id = ?");
+                stmt.setString(1, userIds.get(i));
+                ResultSet nameOfUser = stmt.executeQuery();
+
+                if(nameOfUser.next()) {
+                    opponentList.add(nameOfUser.getString("username"));
+                }
+
+                stmt.close();
+            }
+
+            return opponentList;
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

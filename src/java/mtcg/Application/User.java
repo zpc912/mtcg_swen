@@ -115,6 +115,11 @@ public class User {
     }
 
 
+    public boolean checkDeck() {
+        return deck.checkDeck();
+    }
+
+
     public boolean viewStack() {
         Card[] cardsFromStack = this.stack.toArray(new Card[this.stack.size()]);
 

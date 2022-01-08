@@ -4,11 +4,8 @@ public class Store {
     private Trade[] trades;
 
 
-    public void requestTrade(String tradeReceiver) {}
+    public void requestTrade(String tradeByUser, Card givenCard) {}
 
 
-    public void acceptTrade(String tradeOfferer) {}
-
-
-    public void buyPack(String username) {}
+    public void acceptTrade(String tradeFromUser, Card requestedCard) {}
 }

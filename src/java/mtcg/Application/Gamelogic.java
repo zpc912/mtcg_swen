@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.Random;
+import java.lang.InterruptedException;
 
 public class Gamelogic {
      private User user;
@@ -84,7 +86,7 @@ public class Gamelogic {
         }
 
         if(userInput == 'f') {
-            // TODO: forward user to the battle menu
+            fightPreparation();
         }
         else if(userInput == 'p') {
             editProfile();
@@ -150,6 +152,12 @@ public class Gamelogic {
             }
 
             if(userInput == 'c') {
+                if(!user.checkStack()) {
+                    System.out.println("\nYour deck is already empty but so is your stack!");
+                    System.out.println("You can acquire cards by buying a package in the marketplace.");
+                    editProfile();
+                }
+
                 Postgres db = new Postgres();
                 user.deleteDeck();
                 db.removeOldDeck(user.getUsername());
@@ -372,7 +380,7 @@ public class Gamelogic {
         }
         else if(userInput == 't') {
             // TODO: trade cards with other users
-            System.out.println("TRADING NOT AVAILABLE YET");
+            System.out.println("\nTRADING NOT AVAILABLE YET");
             gameMenu();
         }
         else if(userInput == 'b') {
@@ -388,5 +396,113 @@ public class Gamelogic {
         db.logoutUser(username);
 
         System.exit(0);
+    }
+
+
+    public void fightPreparation() throws SQLException {
+        if(!user.checkStack()) {
+            System.out.println("\nLooks like you do not have any cards yet.");
+            System.out.println("If you want to prove yourself in fighting you must acquire cards first.");
+            System.out.println("You can do that by buying a package in the store.");
+
+            gameMenu();
+        }
+        else if(user.checkStack() && user.checkDeck()) {
+            System.out.println("\nIf you want to fight you must first select some cards for your deck!");
+            System.out.println("You can do that in your profile settings.");
+
+            gameMenu();
+        }
+
+        System.out.println();
+        for(int i=0; i<3; i++) {
+            System.out.println("Searching opponent . . .");
+            try {
+                Thread.sleep(1000);
+            }
+            catch(InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        System.out.println();
+
+        Postgres db = new Postgres();
+        ArrayList<String> opponents = db.getOpponents(user.getUsername());
+        opponents.remove(user.getUsername());
+
+        int opponentCnt = opponents.size();
+        Random rand = new Random();
+        int randomOpponent = rand.nextInt(opponentCnt);
+        String opponentName = opponents.get(randomOpponent);
+        User opponent = db.fetchUserData(opponentName);
+        Card[] opponentDeck = db.initializeDeck(opponentName);
+
+
+        System.out.println(">> OPPONENT FOUND <<\n");
+
+        System.out.println(">> YOU ARE BATTLING AGAINST <<");
+        System.out.println(opponent.getUsername() + " (ELO: " + opponent.getELO() + ")\n");
+
+        System.out.println(">> OPPONENT DECK <<");
+        for(int i=0; i<opponentDeck.length; i++) {
+            System.out.println(opponentDeck[i].getCardInfo());
+        }
+
+        char userInput;
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("\nPress 'y' to confirm or 'n' to decline the fight.");
+        System.out.println("ATTENTION: If you decline this fight you will have to pay a penalty of 5 coins - choose wisely!");
+        while(true) {
+            System.out.print(": ");
+            userInput = sc.nextLine().charAt(0);
+
+            if(userInput != 'y' && userInput != 'n') {
+                System.out.println("\nInvalid option! Try again.");
+            }
+            else {
+                break;
+            }
+        }
+
+        if(userInput == 'y') {
+            System.out.println();
+            for(int i=5; i>=1; i--) {
+                System.out.println("Battle starts in " + i + " seconds . . .");
+                try {
+                    Thread.sleep(1000);
+                }
+                catch(InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+
+            Battle battle = new Battle(user, opponent, opponentDeck, user.getDeckCards());
+            User winner = battle.fight();
+
+            System.out.println("\n\nPress 'b' to go back to the main menu or 'q' to exit the game . . .");
+            while(true) {
+                System.out.print(": ");
+                userInput = sc.nextLine().charAt(0);
+
+                if(userInput != 'b' && userInput != 'q') {
+                    System.out.println("\nInvalid option! Try again.");
+                }
+                else {
+                    break;
+                }
+            }
+
+            if(userInput == 'b') {
+                gameMenu();
+            }
+            else {
+                closeGame(user.getUsername());
+            }
+        }
+        else {
+            System.out.println("PENALTY FUNCTION NOT IMPLEMENTED YET");
+            // TODO: logic for paying penalty
+        }
     }
 }
