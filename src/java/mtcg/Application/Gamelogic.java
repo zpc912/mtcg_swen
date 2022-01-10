@@ -26,7 +26,7 @@ public class Gamelogic {
             Card[] deck = db.initializeDeck(user.getUsername());
             if(deck != null) {
                 user.addCardsToDeck(deck);
-                db.selectDeck(deck);
+                db.selectDeck(deck, user.getUsername());
             }
 
             gameMenu();
@@ -215,7 +215,7 @@ public class Gamelogic {
                 user.deleteDeck();
                 db.removeOldDeck(user.getUsername());
                 user.deckReselection(newDeck);
-                db.selectDeck(newDeck);
+                db.selectDeck(newDeck, user.getUsername());
 
                 System.out.println("\nGood choices you've made!");
             }
@@ -369,6 +369,12 @@ public class Gamelogic {
                         user.addCardsToStack(tmpStack);
 
                         System.out.println("\nOpening package . . .");
+                        try {
+                            Thread.sleep(2000);
+                        }
+                        catch(InterruptedException ex) {
+                            Thread.currentThread().interrupt();
+                        }
                         System.out.println("This package contains:\n");
 
                         for(int i=0; i<packCards.length; i++) {
@@ -520,6 +526,8 @@ public class Gamelogic {
         battle.fight();
 
         user.deleteDeck();
+        ArrayList<Card> tmpStack = db.initializeStack(user.getUsername());
+        user.addCardsToStack(tmpStack);
         db.removeOldDeck(user.getUsername());
         db.removeOldDeck(opponent.getUsername());
 

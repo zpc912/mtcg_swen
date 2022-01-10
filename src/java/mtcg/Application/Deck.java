@@ -1,4 +1,5 @@
 package mtcg.Application;
+import java.util.Arrays;
 
 public class Deck {
     private Card[] deckCards;
@@ -65,8 +66,6 @@ public class Deck {
 
 
     public void cleanDeck() {
-        for(int i=0; i<deckCards.length; i++) {
-            deckCards[i] = null;
-        }
+        Arrays.fill(this.deckCards, null);
     }
 }

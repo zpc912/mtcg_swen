@@ -176,17 +176,15 @@ public class Battle {
 
 
             // Check which user won the current round and transfer the cards
-            //if(user1Pts > user2Pts) {
             if(roundPts1 > roundPts2) {
                 deck1 = transferCardToWinner(card2, deck1);
                 deck2 = removeCardFromLoser(card2, deck2);
-                //cardTransferInDb(card2, user1.getUsername(), user2.getUsername());
+                cardTransferInDb(card2, user1.getUsername(), user2.getUsername());
             }
-            //else if(user1Pts < user2Pts) {
             else if(roundPts1 < roundPts2) {
                 deck2 = transferCardToWinner(card1, deck2);
                 deck1 = removeCardFromLoser(card1, deck1);
-                //cardTransferInDb(card1, user2.getUsername(), user1.getUsername());
+                cardTransferInDb(card1, user2.getUsername(), user1.getUsername());
             }
 
 
@@ -334,15 +332,20 @@ public class Battle {
 
 
     public boolean checkIfDeckEmpty(Card[] cardsOfUser) {
-        boolean deckIsEmpty = false;
+        int ctr = 0;
 
         for(int i=0; i<cardsOfUser.length; i++) {
             if(cardsOfUser[i] == null) {
-                deckIsEmpty = true;
+                ctr++;
             }
         }
 
-        return deckIsEmpty;
+        if(ctr == cardsOfUser.length) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 
@@ -370,7 +373,7 @@ public class Battle {
 
     public void cardTransferInDb(Card cardToTransfer, String usernameWinner, String usernameLoser) {
         Postgres db = new Postgres();
-        db.transferCard(cardToTransfer, usernameLoser, usernameWinner);
+        db.transferCard(cardToTransfer, usernameWinner, usernameLoser);
     }
 
 

@@ -555,9 +555,10 @@ public class Postgres {
     }
 
 
-    public void selectDeck(Card[] newDeck) {
+    public void selectDeck(Card[] newDeck, String username) {
         try {
             String[] cardIds = new String[newDeck.length];
+            String userId = getUserId(username);
 
             for(int i=0; i<newDeck.length; i++) {
                 PreparedStatement stmt = conn.prepareStatement("SELECT card_id FROM cards WHERE name = ?");
@@ -572,9 +573,10 @@ public class Postgres {
             }
 
             for(int i=0; i<newDeck.length; i++) {
-                PreparedStatement stmt = conn.prepareStatement("UPDATE user_cards SET in_deck = ? WHERE card_id = ?");
+                PreparedStatement stmt = conn.prepareStatement("UPDATE user_cards SET in_deck = ? WHERE card_id = ? AND (user_id = ?)");
                 stmt.setInt(1, 1);
                 stmt.setString(2, cardIds[i]);
+                stmt.setString(3, userId);
                 stmt.executeUpdate();
                 stmt.close();
             }
@@ -626,10 +628,10 @@ public class Postgres {
     }
 
 
-    public void transferCard(Card cardToTransfer, String usernameLoser, String usernameWinner) {
+    public void transferCard(Card cardToTransfer, String usernameWinner, String usernameLoser) {
         try {
-            String loserId = getUserId(usernameLoser);
             String winnerId = getUserId(usernameWinner);
+            String loserId = getUserId(usernameLoser);
 
             PreparedStatement stmt = conn.prepareStatement("SELECT card_id FROM cards WHERE name = ?");
             stmt.setString(1, cardToTransfer.getName());
