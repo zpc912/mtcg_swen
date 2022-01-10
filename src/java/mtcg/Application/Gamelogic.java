@@ -302,8 +302,19 @@ public class Gamelogic {
     }
 
 
-    public void viewScore() {
-        // TODO: load scores from database and display as scoreboard
+    public void viewScore() throws SQLException {
+        Postgres db = new Postgres();
+        ArrayList<String> scoreboard = db.getScoreboard();
+        String[] scoreboardArr = new String[scoreboard.size()];
+        scoreboardArr = scoreboard.toArray(scoreboardArr);
+
+        System.out.println("\n>> SCOREBOARD <<\n--------------------------------------------------");
+        for(int i=0; i<scoreboardArr.length; i++) {
+            System.out.println("#" + (i+1) + " | " + scoreboardArr[i]);
+            System.out.println("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+        }
+
+        gameMenu();
     }
 
 
@@ -466,43 +477,78 @@ public class Gamelogic {
         }
 
         if(userInput == 'y') {
-            System.out.println();
-            for(int i=5; i>=1; i--) {
-                System.out.println("Battle starts in " + i + " seconds . . .");
-                try {
-                    Thread.sleep(1000);
-                }
-                catch(InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-
-            Battle battle = new Battle(user, opponent, opponentDeck, user.getDeckCards());
-            User winner = battle.fight();
-
-            System.out.println("\n\nPress 'b' to go back to the main menu or 'q' to exit the game . . .");
-            while(true) {
-                System.out.print(": ");
-                userInput = sc.nextLine().charAt(0);
-
-                if(userInput != 'b' && userInput != 'q') {
-                    System.out.println("\nInvalid option! Try again.");
-                }
-                else {
-                    break;
-                }
-            }
-
-            if(userInput == 'b') {
-                gameMenu();
-            }
-            else {
-                closeGame(user.getUsername());
-            }
+            startFight(opponent, opponentDeck);
         }
         else {
-            System.out.println("PENALTY FUNCTION NOT IMPLEMENTED YET");
-            // TODO: logic for paying penalty
+            boolean validBalance = db.checkBalance(user.getUsername());
+
+            if(!validBalance) {
+                System.out.println("You do not have enough coins to pay the penalty - you need to fight your opponent!");
+                startFight(opponent, opponentDeck);
+            }
+
+            System.out.println("\nPaying penalty . . .");
+            try {
+                Thread.sleep(2000);
+            }
+            catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+
+            db.payBattlePenalty(user.getUsername());
+            System.out.println(">> PENALTY PAID <<");
+
+            battleOverScreen();
+        }
+    }
+
+
+    public void startFight(User opponent, Card[] opponentDeck) throws SQLException {
+        System.out.println();
+        for(int i=5; i>=1; i--) {
+            System.out.println("Battle starts in " + i + " seconds . . .");
+            try {
+                Thread.sleep(1000);
+            }
+            catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        Postgres db = new Postgres();
+        Battle battle = new Battle(user, opponent, user.getDeckCards(), opponentDeck);
+        battle.fight();
+
+        user.deleteDeck();
+        db.removeOldDeck(user.getUsername());
+        db.removeOldDeck(opponent.getUsername());
+
+        battleOverScreen();
+    }
+
+
+    public void battleOverScreen() throws SQLException {
+        char userInput;
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("\n\nPress 'b' to go back to the main menu or 'q' to exit the game . . .");
+        while(true) {
+            System.out.print(": ");
+            userInput = sc.nextLine().charAt(0);
+
+            if(userInput != 'b' && userInput != 'q') {
+                System.out.println("\nInvalid option! Try again.");
+            }
+            else {
+                break;
+            }
+        }
+
+        if(userInput == 'b') {
+            gameMenu();
+        }
+        else {
+            closeGame(user.getUsername());
         }
     }
 }

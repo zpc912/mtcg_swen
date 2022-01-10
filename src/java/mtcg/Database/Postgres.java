@@ -3,13 +3,13 @@ import mtcg.Application.*;
 import mtcg.Enum.*;
 //import com.fasterxml.jackson.core.JsonProcessingException;
 //import com.fasterxml.jackson.databind.ObjectMapper;
+import java.awt.datatransfer.MimeTypeParseException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 import org.mindrot.jbcrypt.BCrypt;
-
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.xml.transform.Result;
 
@@ -167,7 +167,7 @@ public class Postgres {
 
     public void addUserToScoreboard(String username) {
         try {
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO scoreboard (score_id, username, wins, defeats, draws, coins_spent) VALUES (?,?,?,?,?,?)");
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO scoreboard (score_id, username, elo, wins, defeats, draws, coins_spent) VALUES (?,?,?,?,?,?,?)");
 
             UUID uuid = UUID.randomUUID();
             String id = ""+uuid;
@@ -177,6 +177,7 @@ public class Postgres {
             stmt.setInt(4, 0);
             stmt.setInt(5, 0);
             stmt.setInt(6, 0);
+            stmt.setInt(7, 0);
 
             stmt.executeUpdate();
             stmt.close();
@@ -197,7 +198,10 @@ public class Postgres {
             String name, typeStr, elementStr;
             int damage;
             cardType type;
+            cardType typeMonster = cardType.MONSTER;
             elementType element;
+            elementType elementNormal = elementType.NORMAL;
+            elementType elementFire = elementType.FIRE;
             int ctr = 0;
 
             while(rs.next()) {
@@ -209,7 +213,7 @@ public class Postgres {
                 damage = rs.getInt(3);
 
                 typeStr = rs.getString(4);
-                if(typeStr == "MONSTER") {
+                if(typeMonster.toString().equals(typeStr)) {
                     type = cardType.MONSTER;
                 }
                 else {
@@ -217,10 +221,10 @@ public class Postgres {
                 }
 
                 elementStr = rs.getString(5);
-                if(elementStr == "NORMAL") {
+                if(elementNormal.toString().equals(elementStr)) {
                     element = elementType.NORMAL;
                 }
-                else if(elementStr == "FIRE") {
+                else if(elementFire.toString().equals(elementStr)) {
                     element = elementType.FIRE;
                 }
                 else {
@@ -385,14 +389,17 @@ public class Postgres {
             String name, typeStr, elementStr;
             int damage;
             cardType type;
+            cardType typeMonster = cardType.MONSTER;
             elementType element;
+            elementType elementNORMAL = elementType.NORMAL;
+            elementType elementFIRE = elementType.FIRE;
 
             if(rs.next()) {
                 name = rs.getString("name");
                 damage = rs.getInt("damage");
 
                 typeStr = rs.getString("type");
-                if(typeStr == "MONSTER") {
+                if(typeMonster.toString().equals(typeStr)) {
                     type = cardType.MONSTER;
                 }
                 else {
@@ -400,10 +407,10 @@ public class Postgres {
                 }
 
                 elementStr = rs.getString("element");
-                if(elementStr == "NORMAL") {
+                if(elementNORMAL.toString().equals(elementStr)) {
                     element = elementType.NORMAL;
                 }
-                else if(elementStr == "FIRE") {
+                else if(elementFIRE.toString().equals(elementStr)) {
                     element = elementType.FIRE;
                 }
                 else {
@@ -616,5 +623,214 @@ public class Postgres {
         }
 
         return null;
+    }
+
+
+    public void transferCard(Card cardToTransfer, String usernameLoser, String usernameWinner) {
+        try {
+            String loserId = getUserId(usernameLoser);
+            String winnerId = getUserId(usernameWinner);
+
+            PreparedStatement stmt = conn.prepareStatement("SELECT card_id FROM cards WHERE name = ?");
+            stmt.setString(1, cardToTransfer.getName());
+            ResultSet rs = stmt.executeQuery();
+
+            String card_id = null;
+            if(rs.next()) {
+                card_id = rs.getString("card_id");
+            }
+
+            stmt.close();
+
+
+            stmt = conn.prepareStatement("UPDATE user_cards SET user_id = ?, in_deck = ? WHERE user_id = ? AND (card_id = ?) AND (in_deck = ?)");
+            stmt.setString(1, winnerId);
+            stmt.setInt(2, 0);
+            stmt.setString(3, loserId);
+            stmt.setString(4, card_id);
+            stmt.setInt(5, 1);
+
+            stmt.executeUpdate();
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void payBattlePenalty(String username) {
+        try {
+            String user_id = getUserId(username);
+
+            PreparedStatement stmt = conn.prepareStatement("SELECT coins FROM users WHERE user_id = ?");
+            stmt.setString(1, user_id);
+            ResultSet rs = stmt.executeQuery();
+
+            int currCoins = 0;
+            if(rs.next()) {
+                currCoins = rs.getInt("coins");
+            }
+            stmt.close();
+
+
+            stmt = conn.prepareStatement("UPDATE users SET coins = ? WHERE user_id = ?");
+            stmt.setInt(1, currCoins-5);
+            stmt.setString(2, user_id);
+            stmt.executeUpdate();
+            stmt.close();
+
+
+            stmt = conn.prepareStatement("SELECT coins_spent FROM scoreboard WHERE username = ?");
+            stmt.setString(1, username);
+            ResultSet rs2 = stmt.executeQuery();
+
+            int currSpentCoins = 0;
+            if(rs2.next()) {
+                currSpentCoins = rs2.getInt("coins_spent");
+            }
+            stmt.close();
+
+
+            stmt = conn.prepareStatement("UPDATE scoreboard SET coins_spent = ? WHERE username = ?");
+            stmt.setInt(1, currSpentCoins+5);
+            stmt.setString(2, username);
+            stmt.executeUpdate();
+            stmt.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public ArrayList<String> getScoreboard() {
+        try {
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM scoreboard ORDER BY elo DESC");
+            ResultSet rs = stmt.executeQuery();
+
+            ArrayList<String> scoreList = new ArrayList<>();
+            String scoreData = null;
+            while(rs.next()) {
+                scoreData = rs.getString("username") + " | ELO: " + rs.getInt("elo") + " | WINS: " + rs.getInt("wins") + " | DRAWS:" + rs.getInt("draws") + " | DEFEATS: " + rs.getInt("defeats") + " | COINS SPENT: " + rs.getInt("coins_spent");
+                scoreList.add(scoreData);
+            }
+
+            return scoreList;
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    public void updateScoreboard(String winnerUsername, String loserUsername, boolean draw) {
+        try {
+            String winnerId = getUserId(winnerUsername);
+            String loserId = getUserId(loserUsername);
+            String[] userArr = {winnerId, loserId};
+            PreparedStatement stmt;
+
+            if(draw) {
+                for(int i=0; i<userArr.length; i++) {
+                    stmt = conn.prepareStatement("SELECT draws FROM scoreboard WHERE username = ?");
+                    stmt.setString(1, userArr[i]);
+                    ResultSet rs = stmt.executeQuery();
+
+                    int draws = 0;
+                    if(rs.next()) {
+                        draws = rs.getInt("draws");
+                    }
+                    stmt.close();
+
+
+                    stmt = conn.prepareStatement("UPDATE scoreboard SET draws = ? WHERE username = ?");
+                    stmt.setInt(1, (draws+1));
+                    stmt.setString(2, userArr[i]);
+                    stmt.executeUpdate();
+                    stmt.close();
+                }
+            }
+            else {
+                // Update scores of the winner
+                stmt = conn.prepareStatement("SELECT elo FROM users WHERE user_id = ?");
+                stmt.setString(1, winnerId);
+                ResultSet rs = stmt.executeQuery();
+
+                int eloWinner = 0;
+                if(rs.next()) {
+                    eloWinner = rs.getInt("elo");
+                }
+                stmt.close();
+
+
+                stmt = conn.prepareStatement("UPDATE users SET elo = ? WHERE user_id = ?");
+                stmt.setInt(1, (eloWinner+3));
+                stmt.setString(2, winnerId);
+                stmt.executeUpdate();
+                stmt.close();
+
+
+                stmt = conn.prepareStatement("SELECT wins FROM scoreboard WHERE username = ?");
+                stmt.setString(1, winnerUsername);
+                ResultSet rs2 = stmt.executeQuery();
+
+                int winsWinner = 0;
+                if(rs2.next()) {
+                    winsWinner = rs2.getInt("wins");
+                }
+                stmt.close();
+
+                stmt = conn.prepareStatement("UPDATE scoreboard SET elo = ?, wins = ? WHERE username = ?");
+                stmt.setInt(1, (eloWinner+3));
+                stmt.setInt(2, (winsWinner+1));
+                stmt.setString(3, winnerUsername);
+                stmt.executeUpdate();
+                stmt.close();
+
+
+                // Update scores of the loser
+                stmt = conn.prepareStatement("SELECT elo FROM users WHERE user_id = ?");
+                stmt.setString(1, loserId);
+                ResultSet rs3 = stmt.executeQuery();
+
+                int eloLoser = 0;
+                if(rs3.next()) {
+                    eloLoser = rs3.getInt("elo");
+                }
+                stmt.close();
+
+
+                stmt = conn.prepareStatement("UPDATE users SET elo = ? WHERE user_id = ?");
+                stmt.setInt(1, (eloLoser-5));
+                stmt.setString(2, loserId);
+                stmt.executeUpdate();
+                stmt.close();
+
+
+                stmt = conn.prepareStatement("SELECT defeats FROM scoreboard WHERE username = ?");
+                stmt.setString(1, loserUsername);
+                ResultSet rs4 = stmt.executeQuery();
+
+                int defeatsLoser = 0;
+                if(rs4.next()) {
+                    defeatsLoser = rs4.getInt("defeats");
+                }
+                stmt.close();
+
+
+                stmt = conn.prepareStatement("UPDATE scoreboard set elo = ?, defeats = ? WHERE username = ?");
+                stmt.setInt(1, (eloLoser-5));
+                stmt.setInt(2, (defeatsLoser+1));
+                stmt.setString(3, loserUsername);
+                stmt.executeUpdate();
+                stmt.close();
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
