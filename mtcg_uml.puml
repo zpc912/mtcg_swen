@@ -2,18 +2,17 @@
 'https://plantuml.com/class-diagram
 
 class User
-abstract class Card
-enum elementType
-class MonsterCard
-class SpellCard
+class Card
 class CardGenerator
 class Trade
-class Package
+class Pack
 class Deck
 class Store
 class Battle
 class Gamelogic
-class Serverlogic
+class Postgres
+enum cardType
+enum elementType
 
 
 class User {
@@ -21,24 +20,28 @@ class User {
     - password: String
     - ELO: int
     - coins: int
-    - stack: Card[]
+    - stack: ArrayList<Card>
     - deck: Deck[]
 
-    + createDeck()
+    + getDeckCards()
+    + getStackCards()
     + viewDeck()
-    + editDeck()
+    + deckReselection()
     + deleteDeck()
+    + addCardsToStack()
+    + addCardsToDeck()
+    + checkStack()
+    + checkDeck()
+    + viewStack()
 }
 
 
 abstract class Card {
     - name: String
     - damage: int
-    - element: enum
+    - cardType: enum
+    - elementType: enum
 
-    + getName()
-    + getDamage()
-    + getElement()
     + getCardInfo()
 }
 
@@ -50,50 +53,29 @@ enum elementType {
 }
 
 
-class MonsterCard {
-    - name: String
-    - damage: int
-    - element: enum
-
-    + getName()
-    + getDamage()
-    + getElement()
-    + getCardInfo()
-}
-
-
-class SpellCard {
-    - name: String
-    - damage: int
-    - element: enum
-
-    + getName()
-    + getDamage()
-    + getElement()
-    + getCardInfo()
+enum cardType {
+    MONSTER,
+    SPELL
 }
 
 
 class CardGenerator {
     - cards: Card[]
 
-    + generateCard()
+    + shuffleCards()
 }
 
 
 class Trade {
-    - cardToTrade: Card
-    - tradePartner: User
-
-    + getTradeInfo()
+    - tradeData: ArrayList<String>
 }
 
 
-class Package {
+class Pack {
     - packageCards: Card[]
     - price: int
 
-    + createPackage()
+    + setPackageCards()
 }
 
 
@@ -101,8 +83,10 @@ class Deck {
     - deckCards: Card[]
 
     + checkDeck()
+    + printDeck()
+    + initializeDeck()
     + addCardToDeck()
-    + removeCardFromDeck()
+    + cleanDeck()
 }
 
 
@@ -111,49 +95,88 @@ class Store {
 
     + requestTrade()
     + acceptTrade()
-    + buyPack()
 }
 
 
 class Battle {
-    - players: User[]
-    - round: int
-    - battleLog: String[]
+    - user1: User
+    - user2: User
+    - deck1: Card[]
+    - deck2 Card[]
+    - battleLog: ArrayList<String>
 
     + fight()
+    + compareCards()
     + checkEffectiveness()
-    + updateScore()
+    + updateBattleLog()
+    + checkIfDeckEmpty()
+    + transferCardToWinner()
+    + transferCardFromLoser()
+    + cardTransferInDb()
+    + updateScoreboard()
 }
 
 
 class Gamelogic {
-    - input: String
-    - userProfile: User
+    - user: User
 
-    + login()
-    + register()
+    + userLogin()
+    + userRegistration()
+    + returnUser()
     + gameMenu()
     + editProfile()
+    + startScreen()
     + viewScore()
-    + buyPack()
+    + marketplace()
+    + closeGame()
+    + fightPreparation()
+    + startFight()
+    + battleOverScreen()
 }
 
 
-class Serverlogic {
-    + ...
+class Postgres {
+    conn: Connection
+    - salt: String
 
-    + ...()
+    + checkIfUserExists()
+    + registerUser()
+    + loginUser()
+    + fetchUserData()
+    + logoutUser()
+    + addUserToScoreboard()
+    + getAllCards()
+    + checkBalance()
+    + buyPackage()
+    + getUserId()
+    + insertNewCards()
+    + getCardById()
+    + initializeStack()
+    + initializeDeck()
+    + removeOldDeck()
+    + getSelectedCards()
+    + selectDeck()
+    + getOpponents()
+    + transferCard()
+    + payBattlePenalty()
+    + getScoreboard()
+    + updateScoreboard()
 }
 
 
-Card <|-- MonsterCard
-Card <|-- SpellCard
 Gamelogic -- User
 Gamelogic -- Store
+Gamelogic -- Battle
+Gamelogic -- Card
+Gamelogic -- Pack
 User -- Deck
 Store -- Trade
-Store -- Package
-Package -- CardGenerator
+Pack -- CardGenerator
+Battle -- User
+Gamelogic -- Postgres
+Battle -- Postgres
+Card -- elementType
+Card -- cardType
 
 
 @enduml
