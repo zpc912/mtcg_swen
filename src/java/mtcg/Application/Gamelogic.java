@@ -392,7 +392,7 @@ public class Gamelogic {
         else if(userInput == 't') {
             // TODO: trade cards with other users
             System.out.println("\nTRADING NOT AVAILABLE YET");
-            gameMenu();
+            marketplace();
         }
         else if(userInput == 'b') {
             gameMenu();

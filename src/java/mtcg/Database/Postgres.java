@@ -173,7 +173,7 @@ public class Postgres {
             String id = ""+uuid;
             stmt.setString(1, id);
             stmt.setString(2, username);
-            stmt.setInt(3, 0);
+            stmt.setInt(3, 100);
             stmt.setInt(4, 0);
             stmt.setInt(5, 0);
             stmt.setInt(6, 0);
